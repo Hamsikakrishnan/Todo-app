@@ -30,25 +30,37 @@ export default function Home() {
     await deleteDoc(doc(db, "not_completed_tasks", taskId));
     setTasks(tasks.filter((task) => task.id !== taskId));
   };
+  
+  const completeTask = async (task) => {
+    await addDoc(collection(db, "completed_tasks"), { text: task.text });
+    await deleteDoc(doc(db, "not_completed_tasks", task.id));
+    setTasks(tasks.filter((t) => t.id !== task.id));
+  };
 
   return (
     <div className="container mx-auto p-4">
-      <form onSubmit={addTask} className="mb-4">
+      <form onSubmit={addTask} className="mb-4 items-center">
         <input
           type="text"
           placeholder="Add a task"
           value={task || ""}
           onChange={(e) => setTask(e.target.value)}
-          className="border p-2"
+          className="border p-3 cursor-pointer w-96 text-xl"
         />
-        <button type="submit" className="ml-2 bg-blue-500 text-white p-2">Add</button>
+        <button type="submit" className="ml-2 bg-blue-500 rounded-lg px-5 py-3 text-white p-2">Add Task</button>
       </form>
       
       <ul>
         {tasks.map((task) => (
-          <li key={task.id} className="flex justify-between p-2 border-b">
-            <span>{task.text}</span>
-            <button onClick={() => deleteTask(task.id)} className="bg-red-500 text-white p-1">Delete</button>
+          <li key={task.id} className="flex items-center justify-between p-2 border-b">
+            <div>
+                <input className="mr-2 w-4 h-4"
+                  type="checkbox" 
+                  onChange={() => completeTask(task)}
+                />
+                <span className="text-xl">{task.text}</span>
+            </div>
+            <button onClick={() => deleteTask(task.id)} className="bg-slate-800 px-5 py-3 rounded-md text-white font-bold">Delete</button>
           </li>
         ))}
       </ul>
