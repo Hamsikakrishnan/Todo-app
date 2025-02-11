@@ -10,8 +10,7 @@ export default function Home() {
     //Create a button for viewing completed tasks
     //Create a button for viewing not completed
 
-    <div>
-      <h1>Todo App</h1>
+    <div className="container mx-auto p-4">
       <form>
         <input type="text" placeholder="Add a task" />
         <button >Add</button>
@@ -33,8 +32,8 @@ export default function Home() {
           <button>Delete</button>
         </li>
       </ul>
-      <button>View Completed</button>
-      <button>View Not Completed</button>
+      
+      {/* <button>View Not Completed</button> */}
     </div>
   );
 }
