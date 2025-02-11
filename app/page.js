@@ -8,6 +8,7 @@ import { collection, addDoc, getDocs, deleteDoc, doc } from "firebase/firestore"
 export default function Home() {
   const [tasks, setTasks] = useState([]);
   const [task, setTask] = useState("");
+  // useEffect hook to fetch tasks from Firestore when the component mounts
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -17,6 +18,7 @@ export default function Home() {
     };
     fetchTasks();
   }, []);
+    // Function to add a new task to Firestore and update the state
 
   const addTask = async (e) => {
     e.preventDefault();
@@ -25,12 +27,13 @@ export default function Home() {
     setTasks([...tasks, { id: docRef.id, text: task }]);
     setTask("");
   };
+    // Function to delete a task from Firestore and update the state
 
   const deleteTask = async (taskId) => {
     await deleteDoc(doc(db, "not_completed_tasks", taskId));
     setTasks(tasks.filter((task) => task.id !== taskId));
   };
-  
+    // Function to mark a task as complete, move it to the completed tasks collection, and update the state
   const completeTask = async (task) => {
     await addDoc(collection(db, "completed_tasks"), { text: task.text });
     await deleteDoc(doc(db, "not_completed_tasks", task.id));
